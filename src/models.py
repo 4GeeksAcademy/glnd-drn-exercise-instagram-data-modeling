@@ -7,26 +7,47 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
 
 class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
+    __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    first_name = Column(String(250), nullable=False)
+    last_name = Column(String(250), nullable=False)
+    user_name = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
+    
+class Profile(Base):
+    __tablename__ = 'profile'
+    id = Column(Integer, primary_key=True)     
+    name = Column(String(250), nullable=False)
+    last_name = Column(String(250), nullable=False)
+    follower_number = Column(Integer, nullable=False)
+    city = Column(String(250), nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'))  
 
-    def to_dict(self):
-        return {}
+class Post(Base):
+    __tablename__ = 'post'
+    id = Column(Integer, primary_key=True)
+    number_post = Column(Integer, nullable=False)
+    number_likes = Column(Integer, nullable=False)
+    number_coments = Column(Integer, nullable=False)
+    perfil_id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+
+class Follow(Base):
+    __tablename__ = 'follow'
+    id = Column(Integer, primary_key=True)
+    number_follows = Column(Integer, nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'))
+
+class Comment(Base):
+    __tablename__ = 'comment'
+    id = Column(Integer, primary_key=True)
+    comment_txt = Column(String(250), nullable=False)
+    comment_number = Column(Integer, nullable=False)
+    profile_id = relationship(Profile, backref='profile', lazy=True)
+    post_id = relationship(Post, backref='post', lazy=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
 
 ## Draw from SQLAlchemy base
 try:
