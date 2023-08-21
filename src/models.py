@@ -31,7 +31,7 @@ class Post(Base):
     number_post = Column(Integer, nullable=False)
     number_likes = Column(Integer, nullable=False)
     number_coments = Column(Integer, nullable=False)
-    perfil_id = Column(Integer, primary_key=True)
+    perfil_id = Column(Integer, nullable=True)
     user_id = Column(Integer, ForeignKey('user.id'))
 
 class Follow(Base):
